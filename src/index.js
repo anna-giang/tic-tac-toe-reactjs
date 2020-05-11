@@ -1,59 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-/* import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister(); */
-
-// Square is a 'controlled component' of Board
-
-/*
-class Square extends React.Component {
-  constructor(props){
-	  super(props);
-	  // use state to 'remember' things 
-	  this.state = {
-		  value: null,
-	  };
-  }
-  render() {
-    return (
-      // <button className="square" onClick= {function() { alert('click'); }}>
-	  // same thing but with arrow notation - call anonymous function onClick
-	  // the stuff between the <button> tags is the stuff to display in the button
-	  // when setState is called, the child components are automatically updated too
-	  <button className="square" onClick={() => this.props.onClick()}>
-		{this.props.value}
-      </button>
-    );
-  }
-}
-*/
 
 function Square(props) {
 	return( <button className="square" onClick={props.onClick}>{props.value}</button> );
 }
 
 class Board extends React.Component {
-  /*constructor(props) {
-	  super(props);
-	  this.state = {
-		  squares: Array(9).fill(null), // fill the state up with the X and O
-	      xIsNext: true,
-	  };
-  }*/
-  
   // NOTE -- conventional to name with on[Event] for event handlers, and handle[Event] for event handlers (thing to when when the event occurs)
   renderSquare(i) {
 	// pass two props to square
@@ -120,7 +74,7 @@ class Game extends React.Component {
 	  this.state = {
 		  history: [{squares: Array(9).fill(null)}],
 		  xIsNext: true, // change to 'true' when stepNumber is even
-		  stepNumber: 0, // the move we are currently viewing 
+		  stepNumber: 0 // the move we are currently viewing 
 	  }
   }
   render() {
@@ -130,9 +84,37 @@ class Game extends React.Component {
 	const winner = calculateWinner(current.squares);
 	
 	const moves = history.map((step, move) => { // step == board at every move (is mapped to every) move = move number 0,1,2,3...
-		const desc = move ? // description
-			'Go to move #' + move : // if 'move' exists, then 'go to move', otherwise go to game start
-			'Go to game start';
+		
+		let desc = null;
+		if (move == 0){
+			desc = 'Go to game start';
+		}
+		else {
+			// determine the location (col, row) of the current step
+			// compare the current step with the previous step, and find the Square that changed from null to filled
+			const prevStep = this.state.history[move-1].squares;
+			const thisStep = step.squares;
+			var coord = [0,0];
+			var i = 0;
+			for (i = 0; i < prevStep.length; i++){
+				
+				if (prevStep[i] != thisStep[i]) {
+					break
+					
+				}
+				// update the coord of change
+				coord[0] = (coord[0] + 1) % 3; // the column number changes with every index in array, within range 1-3
+				if ((i+1) % 3 == 0 && i+1 != 0){ // meanwhile row number will change every 3 iterations
+					coord[1]++;
+				}
+				
+			}
+			
+			desc = 'Go to move #' + move + ": (" + (coord[0] + 1).toString() + "," + (coord[1] + 1).toString() + ")";
+	    }
+		//const desc = move ? // description
+			//'Go to move #' + move + ": ": // if 'move' exists, then 'go to move', otherwise go to game start
+			//'Go to game start';
 			// NOTE: assign proper KEYS (unique between component and its siblings) whenever building dynamic lists
 		return (
 			<li key={move}>
@@ -169,7 +151,7 @@ class Game extends React.Component {
 		  return;
 	  }
 	  squares[i] = this.state.xIsNext ? 'X' : 'O';
-	  this.setState({history: this.state.history.concat({squares: squares}), xIsNext: !this.state.xIsNext, stepNumber: history.length});
+	  this.setState({history: history.concat({squares: squares}), xIsNext: !this.state.xIsNext, stepNumber: history.length});
 	  // NOTE: Concat method does not modify the original array, whereas push() does
   }
   
