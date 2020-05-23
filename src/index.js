@@ -11,16 +11,16 @@ class Board extends React.Component {
   // NOTE -- conventional to name with on[Event] for event handlers, and handle[Event] for event handlers (thing to when when the event occurs)
   renderSquare(i) {
 	// pass two props to square
-    return ( 
-	 <Square 
-	   value={this.props.squares[i]} 
+    return (
+	 <Square
+	   value={this.props.squares[i]}
        onClick={() => this.props.onClick(i)}
 	 />
 	);
   }
 
   render() {
-	
+
 	// renders child square components, and passes them 'props'
 	// Board class is parent
     return (
@@ -43,8 +43,8 @@ class Board extends React.Component {
       </div>
     );
   }
-  
-  
+
+
 }
 
 function calculateWinner(squares) {
@@ -74,7 +74,7 @@ class Game extends React.Component {
 	  this.state = {
 		  history: [{squares: Array(9).fill(null)}],
 		  xIsNext: true, // change to 'true' when stepNumber is even
-		  stepNumber: 0 // the move we are currently viewing 
+		  stepNumber: 0 // the move we are currently viewing
 	  }
   }
   render() {
@@ -82,9 +82,9 @@ class Game extends React.Component {
 	const history = this.state.history;
 	const current = history[this.state.stepNumber];
 	const winner = calculateWinner(current.squares);
-	
+
 	const moves = history.map((step, move) => { // step == board at every move (is mapped to every) move = move number 0,1,2,3...
-		
+
 		let desc = null;
 		if (move == 0){
 			desc = 'Go to game start';
@@ -97,38 +97,48 @@ class Game extends React.Component {
 			var coord = [0,0];
 			var i = 0;
 			for (i = 0; i < prevStep.length; i++){
-				
+
 				if (prevStep[i] != thisStep[i]) {
 					break
-					
+
 				}
-				// update the coord of change
+				// UPDATE AND DISPLAY COORDINATE OF CHANGE
 				coord[0] = (coord[0] + 1) % 3; // the column number changes with every index in array, within range 1-3
 				if ((i+1) % 3 == 0 && i+1 != 0){ // meanwhile row number will change every 3 iterations
 					coord[1]++;
 				}
-				
+
 			}
-			
+
 			desc = 'Go to move #' + move + ": (" + (coord[0] + 1).toString() + "," + (coord[1] + 1).toString() + ")";
 	    }
-		//const desc = move ? // description
-			//'Go to move #' + move + ": ": // if 'move' exists, then 'go to move', otherwise go to game start
-			//'Go to game start';
+
+		// BOLDING THE CURRENT MOVE SHOWN
+		// if the move number is equal to the stepNumber, bold the button
+		if (move == this.state.stepNumber) {
+			return (
+				<li key={move}>
+					<button onClick={()=> this.jumpTo(move)}><strong>{desc}</strong></button>
+				</li>
+			);
+		}
+		else {
 			// NOTE: assign proper KEYS (unique between component and its siblings) whenever building dynamic lists
-		return (
-			<li key={move}>
-				<button onClick={()=> this.jumpTo(move)}>{desc}</button>
-			</li>
-		);
+			return (
+				<li key={move}>
+					<button onClick={()=> this.jumpTo(move)}>{desc}</button>
+				</li>
+			);
+		}
+
 	});
-	
+
 	let status;
 	if (winner) {
 		status = 'Winner: ' + winner
 	} else {
 		status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
-	} 
+	}
     return (
       <div className="game">
         <div className="game-board">
@@ -142,7 +152,7 @@ class Game extends React.Component {
       </div>
     );
   }
-  
+
   handleClick(i) {
 	  const history = this.state.history.slice(0, this.state.stepNumber+1)
 	  const current = history[history.length - 1]
@@ -154,17 +164,17 @@ class Game extends React.Component {
 	  this.setState({history: history.concat({squares: squares}), xIsNext: !this.state.xIsNext, stepNumber: history.length});
 	  // NOTE: Concat method does not modify the original array, whereas push() does
   }
-  
+
   jumpTo(move) {
 	  // update stepNumber, xIsNext
 	  if (move % 2 == 0) {
 		// set the xIsNext to true
-        this.setState({xIsNext: true, stepNumber: move});	
+        this.setState({xIsNext: true, stepNumber: move});
 	  }
 	  else {
-		this.setState({xIsNext: false, stepNumber: move});	
+		this.setState({xIsNext: false, stepNumber: move});
 	  }
-		  
+
   }
 }
 
