@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+// TODO: Consider allowing users to change the board size, and the how many in a row to win
 
 function Square(props) {
 	return( <button className="square" onClick={props.onClick}>{props.value}</button> );
@@ -19,27 +20,32 @@ class Board extends React.Component {
 	);
   }
 
-  render() {
+  createBoard() {
+		let row = 3;
+		let col = 3;
+		let squareNo = 0; // number the squares sequentially starting from 0
+		let board = [];
+		// outer loop to create the rows
+		for (let r = 0; r < row; r++) {
+			let columns = [];
+			// inner loop to create the columns (i.e. the squares)
+			for (let c = squareNo; c < col + squareNo; c++) {
+				columns.push(this.renderSquare(c));
+			}
+			squareNo += 3;
+			board.push(<div className = "board-row">{columns}</div>);
+		}
+		return board;
 
-	// renders child square components, and passes them 'props'
-	// Board class is parent
+	}
+
+  render() {
+		// USE TWO LOOPS TO RENDER THE SQUARES INSTEAD OF HARDCODING
+	  // renders child square components, and passes them 'props'
+	  // Board class is parent
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+				{this.createBoard()}
       </div>
     );
   }
