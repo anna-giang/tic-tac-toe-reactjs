@@ -90,7 +90,17 @@ function calculateWinner(squares) {
       return {winner: squares[a], lines: lines[i]};
     }
   }
-  return null;
+	// HANDLING WHEN GAME IS A DRAW
+	// Check if all the squares are filled
+	// If any one square is not yet filled, return null
+	for (let i = 0; i < squares.length; i++) {
+		if (squares[i] == null) {
+			return null;
+		}
+	}
+	// If all squares are filled, there is NO winner, so return false
+	return false;
+
 }
 
 class Game extends React.Component {
@@ -174,8 +184,10 @@ class Game extends React.Component {
 	if (winner) {
 		status = 'Winner: ' + winner.winner;
 		winningSquares = winner.lines; // PASS BOARD THE SQUARE NUMBERS OF THE WINNING SQUARES
-	} else {
+	} else if (winner == null) {
 		status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
+	} else {
+		status = "RESULT IS A DRAW. Press 'Go to Game Start' to play again.";
 	}
     return (
       <div className="game">
