@@ -20,6 +20,7 @@ class Board extends React.Component {
 	);
   }
 
+	// Help from: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
   createBoard() {
 		let row = 3;
 		let col = 3;
@@ -78,19 +79,30 @@ class Game extends React.Component {
   constructor(props) {
 	  super(props);
 	  this.state = {
-		  history: [{squares: Array(9).fill(null)}],
+
+		  history: [{squares: Array(9).fill(null), move: 0}], // will be changing the order of the moves for display,
+																													// hence every move should know its move number
 		  xIsNext: true, // change to 'true' when stepNumber is even
-		  stepNumber: 0 // the move we are currently viewing
+		  stepNumber: 0, // the move we are currently viewing
+			displayAsc: true // the order moves are currently displayed in
 	  }
   }
-  render() {
-	// render the currently selected move, according to stepNumber
-	const history = this.state.history;
+  render() { // render the currently selected move, according to stepNumber
+
+
+	let history = this.state.history.slice()
 	const current = history[this.state.stepNumber];
 	const winner = calculateWinner(current.squares);
 
-	const moves = history.map((step, move) => { // step == board at every move (is mapped to every) move = move number 0,1,2,3...
+	// TOGGLE THE ORDER OF THE DISPLAY OF THE MOVES
+	// if the displayAsc is FALSE, we must reverse the order of history for moves display
+	if (!this.state.displayAsc) {
+	 	history = history.reverse()
+	}
 
+	const moves = history.map(step => { // step == board at every move (is mapped to every) move = move number 0,1,2,3...
+
+		let move = step.move;
 		let desc = null;
 		if (move == 0){
 			desc = 'Go to game start';
@@ -153,6 +165,9 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+					<div style={{paddingTop:"15px"}}>
+					<button onClick={() => this.toggleMoveOrder()}>Toggle Moves Order</button>
+					</div>
           <ol>{moves}</ol>
         </div>
       </div>
@@ -167,7 +182,10 @@ class Game extends React.Component {
 		  return;
 	  }
 	  squares[i] = this.state.xIsNext ? 'X' : 'O';
-	  this.setState({history: history.concat({squares: squares}), xIsNext: !this.state.xIsNext, stepNumber: history.length});
+	  this.setState({history: history.concat({squares: squares, move: this.state.stepNumber+1}),
+									 xIsNext: !this.state.xIsNext,
+									 stepNumber: history.length,
+								   displayAsc: this.state.displayAsc});
 	  // NOTE: Concat method does not modify the original array, whereas push() does
   }
 
@@ -182,6 +200,13 @@ class Game extends React.Component {
 	  }
 
   }
+
+	toggleMoveOrder() {
+		this.setState({history: this.state.history,
+									 xIsNext: this.state.xIsNext,
+									 stepNumber: this.state.stepNumber,
+								   displayAsc: !this.state.displayAsc});
+	}
 }
 
 // ========================================
