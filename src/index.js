@@ -5,18 +5,28 @@ import './index.css';
 // TODO: Consider allowing users to change the board size, and the how many in a row to win
 
 function Square(props) {
-	return( <button className="square" onClick={props.onClick}>{props.value}</button> );
+	// IF THE SQUARE IS A WINNING SQUARE, THEN RETURN A COLOURED SQUARE
+	if (props.winningSquare) {
+		return( <button className="square" style={{backgroundColor:"aquamarine"}} onClick={props.onClick}>{props.value}</button> );
+	}
+	else {
+		return( <button className="square" onClick={props.onClick}>{props.value}</button> );
+	}
+
+
 }
 
 class Board extends React.Component {
   // NOTE -- conventional to name with on[Event] for event handlers, and handle[Event] for event handlers (thing to when when the event occurs)
-  renderSquare(i) {
+  renderSquare(i, isWinner) {
 	// pass two props to square
     return (
 	 <Square
 	   value={this.props.squares[i]}
        onClick={() => this.props.onClick(i)}
+			 	winningSquare={isWinner}
 	 />
+
 	);
   }
 
@@ -31,7 +41,13 @@ class Board extends React.Component {
 			let columns = [];
 			// inner loop to create the columns (i.e. the squares)
 			for (let c = squareNo; c < col + squareNo; c++) {
-				columns.push(this.renderSquare(c));
+				var winningSquare = false;
+				if (this.props.winningSquares) {
+					// IF C IS IN THIS.PROPS.LINES,
+					// the square is a 'winningSquare', and will render coloured
+					winningSquare = this.props.winningSquares.includes(c);
+				}
+				columns.push(this.renderSquare(c, winningSquare));
 			}
 			squareNo += 3;
 			board.push(<div className = "board-row">{columns}</div>);
@@ -69,7 +85,9 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+			// FOR HIGHLIGHTING THE THREE SQUARES THAT CAUSED WIN
+			// Return an object with BOTH who won, and the winning line
+      return {winner: squares[a], lines: lines[i]};
     }
   }
   return null;
@@ -152,8 +170,10 @@ class Game extends React.Component {
 	});
 
 	let status;
+	let winningSquares;
 	if (winner) {
-		status = 'Winner: ' + winner
+		status = 'Winner: ' + winner.winner;
+		winningSquares = winner.lines; // PASS BOARD THE SQUARE NUMBERS OF THE WINNING SQUARES
 	} else {
 		status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
 	}
@@ -161,7 +181,8 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board squares={current.squares}
-		         onClick={(i)=>this.handleClick(i)} />
+		         onClick={(i)=>this.handleClick(i)}
+						 winningSquares={winningSquares} />
         </div>
         <div className="game-info">
           <div>{status}</div>
@@ -201,6 +222,7 @@ class Game extends React.Component {
 
   }
 
+	// changes the order of the past move buttons from ascending <-> descending order
 	toggleMoveOrder() {
 		this.setState({history: this.state.history,
 									 xIsNext: this.state.xIsNext,
