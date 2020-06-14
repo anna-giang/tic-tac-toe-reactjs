@@ -107,7 +107,6 @@ class TicTacToe extends React.Component {
   constructor(props) {
 	  super(props);
 	  this.state = {
-
 		  history: [{squares: Array(9).fill(null), move: 0}], // will be changing the order of the moves for display,
 																													// hence every move should know its move number
 		  xIsNext: true, // change to 'true' when stepNumber is even
@@ -202,11 +201,6 @@ class TicTacToe extends React.Component {
 					<button onClick={() => this.toggleMoveOrder()}>Toggle Moves Order</button>
 					</div>
           <ol>{moves}</ol>
-          <div>
-            <Link to="/">
-              <button>BACK TO SETTINGS</button>
-            </Link>
-          </div>
         </div>
 
       </div>
