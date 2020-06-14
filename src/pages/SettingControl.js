@@ -26,8 +26,17 @@ class SettingControl extends React.Component {
       p2SymbolFinal = p2Symbol;
     }
 
-    this.setState({allSet: true,
-                   gameSettings: {p1Symbol: p1SymbolFinal, p2Symbol: p2SymbolFinal}});
+    // Players cannot have the same symbol!
+    if (p1SymbolFinal == p2SymbolFinal) {
+      alert("Please enter two different symbols.");
+    }
+    // Otherwise, get ready to switch state
+    else {
+      this.setState({allSet: true,
+                     gameSettings: {p1Symbol: p1SymbolFinal, p2Symbol: p2SymbolFinal}});
+    }
+
+
   }
 
 
