@@ -4,7 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 
 /* Import page components here */
 import Home from './pages/Home.js';
-import Settings from './pages/Settings.js';
+import SettingControl from './pages/SettingControl.js';
 
 
 class Main extends React.Component {
@@ -12,7 +12,7 @@ class Main extends React.Component {
     return (
       <Switch>
         <Route exact path='/' component={Home}></Route>
-        <Route exact path='/tictactoe' component={Settings}></Route>
+        <Route exact path='/tictactoe' component={SettingControl}></Route>
       </Switch>
     );
     // NOTE: To pass props to the components, use: render={(props) => <TicTacToe {...props} />}

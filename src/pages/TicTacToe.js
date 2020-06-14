@@ -109,10 +109,16 @@ class TicTacToe extends React.Component {
 	  this.state = {
 		  history: [{squares: Array(9).fill(null), move: 0}], // will be changing the order of the moves for display,
 																													// hence every move should know its move number
-		  xIsNext: true, // change to 'true' when stepNumber is even
+		  p1IsNext: true, // change to 'true' when stepNumber is even
 		  stepNumber: 0, // the move we are currently viewing
-			displayAsc: true // the order moves are currently displayed in
+			displayAsc: true, // the order moves are currently displayed in
+
+			// NOTE: These will not be modified by setState functions anywhere in TicTacToe component
+			p1Symbol: this.props.settings.p1Symbol,
+			p2Symbol: this.props.settings.p2Symbol,
+
 	  }
+		console.log(this.state);
   }
   render() { // render the currently selected move, according to stepNumber
 
@@ -184,7 +190,7 @@ class TicTacToe extends React.Component {
 		status = 'Winner: ' + winner.winner;
 		winningSquares = winner.lines; // PASS BOARD THE SQUARE NUMBERS OF THE WINNING SQUARES
 	} else if (winner == null) {
-		status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
+		status = 'Next player: ' + (this.state.p1IsNext ? this.state.p1Symbol : this.state.p2Symbol);
 	} else {
 		status = "RESULT IS A DRAW. Press 'Go to Game Start' to play again.";
 	}
@@ -214,22 +220,22 @@ class TicTacToe extends React.Component {
 	  if (calculateWinner(squares) || squares[i]) {
 		  return;
 	  }
-	  squares[i] = this.state.xIsNext ? 'X' : 'O';
+	  squares[i] = this.state.p1IsNext ? this.state.p1Symbol : this.state.p2Symbol;
 	  this.setState({history: history.concat({squares: squares, move: this.state.stepNumber+1}),
-									 xIsNext: !this.state.xIsNext,
+									 p1IsNext: !this.state.p1IsNext,
 									 stepNumber: history.length,
 								   displayAsc: this.state.displayAsc});
 	  // NOTE: Concat method does not modify the original array, whereas push() does
   }
 
   jumpTo(move) {
-	  // update stepNumber, xIsNext
+	  // update stepNumber, p1IsNext
 	  if (move % 2 == 0) {
-		// set the xIsNext to true
-        this.setState({xIsNext: true, stepNumber: move});
+		// set the p1IsNext to true
+        this.setState({p1IsNext: true, stepNumber: move});
 	  }
 	  else {
-		this.setState({xIsNext: false, stepNumber: move});
+		this.setState({p1IsNext: false, stepNumber: move});
 	  }
 
   }
@@ -237,7 +243,7 @@ class TicTacToe extends React.Component {
 	// changes the order of the past move buttons from ascending <-> descending order
 	toggleMoveOrder() {
 		this.setState({history: this.state.history,
-									 xIsNext: this.state.xIsNext,
+									 p1IsNext: this.state.p1IsNext,
 									 stepNumber: this.state.stepNumber,
 								   displayAsc: !this.state.displayAsc});
 	}
