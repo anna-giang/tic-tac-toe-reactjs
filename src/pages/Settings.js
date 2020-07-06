@@ -7,10 +7,11 @@ class Settings extends React.Component {
     super(props);
   }
 
-  chooseSymbols() {
+  setSettings() {
     var p1Symbol = document.getElementById('p1-symbol').value;
     var p2Symbol = document.getElementById('p2-symbol').value;
-    this.props.goToGame(p1Symbol, p2Symbol);
+    var boardSize = parseInt(document.getElementById('board-size').value);
+    this.props.goToGame(p1Symbol, p2Symbol, boardSize);
   }
 
   render() {
@@ -21,7 +22,10 @@ class Settings extends React.Component {
 
         <label htmlFor="p2-symbol">Player 2</label>
         <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
-        <button onClick={() => this.chooseSymbols()}>Choose Symbols!</button>
+
+        <label htmlFor="board-size">Board Size</label>
+        <input id="board-size" maxlength="2" name="board-size"></input>
+        <button onClick={() => this.setSettings()}>GO!</button>
       </div>
     )
 

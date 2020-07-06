@@ -10,14 +10,15 @@ class SettingControl extends React.Component {
     super(props);
     this.state = {
       allSet: false, // settings have been finalised
-      gameSettings: {p1Symbol: 'X', p2Symbol: 'O'} // props to pass to TicTacToe game
+      gameSettings: {p1Symbol: 'X', p2Symbol: 'O', boardSize: 3} // props to pass to TicTacToe game
     };
 
   }
 
-  goToGame(p1Symbol, p2Symbol) {
+  goToGame(p1Symbol, p2Symbol, boardSize) {
     var p1SymbolFinal = this.state.gameSettings.p1Symbol;
     var p2SymbolFinal = this.state.gameSettings.p2Symbol;
+    var boardSizeFinal = this.state.gameSettings.boardSize;
 
     if (p1Symbol !== "") {
       p1SymbolFinal = p1Symbol;
@@ -25,6 +26,14 @@ class SettingControl extends React.Component {
     if (p2Symbol !== "") {
       p2SymbolFinal = p2Symbol;
     }
+    if (boardSize !== "" && boardSize <= 30) {
+      boardSizeFinal = boardSize;
+    }
+    else {
+      alert("Max Board Size: 30 x 30");
+      return;
+    }
+
 
     // Players cannot have the same symbol!
     if (p1SymbolFinal == p2SymbolFinal) {
@@ -33,7 +42,7 @@ class SettingControl extends React.Component {
     // Otherwise, get ready to switch state
     else {
       this.setState({allSet: true,
-                     gameSettings: {p1Symbol: p1SymbolFinal, p2Symbol: p2SymbolFinal}});
+                     gameSettings: {p1Symbol: p1SymbolFinal, p2Symbol: p2SymbolFinal, boardSize: boardSizeFinal}});
     }
 
 
@@ -61,7 +70,7 @@ class SettingControl extends React.Component {
     else {
       return (
         <div>
-          {<Settings goToGame={(p1Symbol, p2Symbol)=>this.goToGame(p1Symbol, p2Symbol)}/>}
+          {<Settings goToGame={(p1Symbol, p2Symbol, boardSize)=>this.goToGame(p1Symbol, p2Symbol, boardSize)}/>}
           <Link to="/">
               <button>Back to Home</button>
           </Link>

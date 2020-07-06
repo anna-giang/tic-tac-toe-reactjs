@@ -32,8 +32,8 @@ class Board extends React.Component {
 
 	// Help from: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
   createBoard() {
-		let row = 3;
-		let col = 3;
+		let row = Math.floor(Math.sqrt(this.props.squares.length));
+		let col = row;
 		let squareNo = 0; // number the squares sequentially starting from 0
 		let board = [];
 		// outer loop to create the rows
@@ -49,7 +49,7 @@ class Board extends React.Component {
 				}
 				columns.push(this.renderSquare(c, winningSquare));
 			}
-			squareNo += 3;
+			squareNo += row;
 			board.push(<div className = "board-row">{columns}</div>);
 		}
 		return board;
@@ -62,7 +62,7 @@ class Board extends React.Component {
 	  // Board class is parent
     return (
       <div>
-				{this.createBoard()}
+				{this.createBoard(this.props.boardSize)}
       </div>
     );
   }
@@ -71,6 +71,7 @@ class Board extends React.Component {
 }
 
 function calculateWinner(scoreState, movesPlayed, boardSize) {
+	console.log("scoreState: " + scoreState + " movesPlayed: " + movesPlayed + " boardSize: " + boardSize);
 	for (let i = 0; i < scoreState.length; i++) {
 		if (scoreState[i] === boardSize || scoreState[i] === -boardSize) {
 			console.log("scoreState[i]: " + scoreState[i] + " i: " + i)
@@ -80,7 +81,7 @@ function calculateWinner(scoreState, movesPlayed, boardSize) {
 			// Is a row or col or diagonal
 			if (i < boardSize) { // row
 				for (let j = 0; j < boardSize; j++) {
-					line.push(2*i+j);
+					line.push(boardSize*i+j);
 				}
 			}
 			else if (i < 2*boardSize) { // col
@@ -137,15 +138,16 @@ class TicTacToe extends React.Component {
 			 * 'move': move number
 			 *	  will be changing the order of the moves for display, hence every move should know its move number
 			 */
-		  history: [{squares: Array(9).fill(null), move: 0, scoreState: Array(2*3+2).fill(0)}],
+		  history: [{squares: Array(this.props.settings.boardSize**2).fill(null), move: 0, scoreState: Array(2*this.props.settings.boardSize+2).fill(0)}],
 
 		  p1IsNext: true, // change to 'true' when stepNumber is even
 		  stepNumber: 0, // the move we are currently viewing
 			displayAsc: true, // the order moves are currently displayed in
 
-			// NOTE: These will not be modified by setState functions anywhere in TicTacToe component
+			// NOTE: 'p1Symbol', 'p2Symbol', 'boardSize' will NOT be modified by setState functions anywhere in TicTacToe component
 			p1Symbol: this.props.settings.p1Symbol,
 			p2Symbol: this.props.settings.p2Symbol,
+			boardSize: this.props.settings.boardSize
 
 	  }
   }
@@ -154,7 +156,7 @@ class TicTacToe extends React.Component {
 
 	let history = this.state.history.slice()
 	const current = history[this.state.stepNumber];
-	const winner = calculateWinner(current.scoreState, this.state.stepNumber, 3);
+	const winner = calculateWinner(current.scoreState, this.state.stepNumber, this.state.boardSize);
 
 	// TOGGLE THE ORDER OF THE DISPLAY OF THE MOVES
 	// if the displayAsc is FALSE, we must reverse the order of history for moves display
@@ -183,8 +185,8 @@ class TicTacToe extends React.Component {
 
 				}
 				// UPDATE AND DISPLAY COORDINATE OF CHANGE
-				coord[0] = (coord[0] + 1) % 3; // the column number changes with every index in array, within range 1-3
-				if ((i+1) % 3 == 0 && i+1 != 0){ // meanwhile row number will change every 3 iterations
+				coord[0] = (coord[0] + 1) % this.state.boardSize; // the column number changes with every index in array, within range 1-3
+				if ((i+1) % this.state.boardSize == 0 && i+1 != 0){ // meanwhile row number will change every 3 iterations
 					coord[1]++;
 				}
 
@@ -248,7 +250,7 @@ class TicTacToe extends React.Component {
 	  const current = history[history.length - 1];
 	  const squares = current.squares.slice(); // create a copy of the array and modify the copy
 
-	  if (calculateWinner(current.scoreState, squares.length, 3) || squares[i]) {
+	  if (calculateWinner(current.scoreState, current.move, this.state.boardSize) || squares[i]) {
 		  return;
 	  }
 
@@ -258,7 +260,7 @@ class TicTacToe extends React.Component {
 		const colRow = this.getColRow(i);
 		const col = colRow[0];
 		const row = colRow[1];
-		const gridSize = 3;
+		const gridSize = this.state.boardSize;
 		let newScoreState = current.scoreState.slice();
 		newScoreState[row] += point;
 		newScoreState[gridSize + col] += point;
@@ -299,7 +301,7 @@ class TicTacToe extends React.Component {
 	}
 
 	getColRow(squareNo) {
-		return [squareNo % 3,Math.floor(squareNo/3)];
+		return [squareNo % (this.state.boardSize),Math.floor(squareNo/(this.state.boardSize))];
 	}
 }
 
