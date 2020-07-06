@@ -26,11 +26,11 @@ class SettingControl extends React.Component {
     if (p2Symbol !== "") {
       p2SymbolFinal = p2Symbol;
     }
-    if (boardSize !== "" && boardSize <= 30) {
+    if (boardSize !== "" && boardSize <= 30 && boardSize > 1) {
       boardSizeFinal = boardSize;
     }
     else {
-      alert("Max Board Size: 30 x 30");
+      alert("Please enter a valid whole number board size.\nMinimum Board Size: 2\nMaximum Board Size: 30");
       return;
     }
 
