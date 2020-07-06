@@ -70,45 +70,75 @@ class Board extends React.Component {
 
 }
 
-function calculateWinner(squares) {
-  // All the possible combination for winning
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+function calculateWinner(scoreState, movesPlayed, boardSize) {
+	for (let i = 0; i < scoreState.length; i++) {
+		if (scoreState[i] === boardSize || scoreState[i] === -boardSize) {
+			console.log("scoreState[i]: " + scoreState[i] + " i: " + i)
+			let winner = (scoreState[i] > 0) ? 1 : 2; // which player won?
+			let line = [];
+			// calculate the square numbers in the winning line
+			// Is a row or col or diagonal
+			if (i < boardSize) { // row
+				for (let j = 0; j < boardSize; j++) {
+					line.push(2*i+j);
+				}
+			}
+			else if (i < 2*boardSize) { // col
+				for (let j = 0; j < boardSize; j++) {
+					// colNumber + j*boardSize
+					line.push((i - boardSize) + j*boardSize);
+				}
+
+			}
+			else { // diagonal
+				if (i == 2*boardSize) { // left to right diagonal
+					for (let j = 0; j < boardSize; j++) {
+						line.push((boardSize+1)*j);
+					}
+				}
+				else { // right to left diagonal
+					for (let j = 1; j <= boardSize; j++) {
+						line.push((boardSize-1)*j);
+					}
+				}
+			}
 			// FOR HIGHLIGHTING THE THREE SQUARES THAT CAUSED WIN
 			// Return an object with BOTH who won, and the winning line
-      return {winner: squares[a], lines: lines[i]};
-    }
-  }
-	// HANDLING WHEN GAME IS A DRAW
-	// Check if all the squares are filled
-	// If any one square is not yet filled, return null
-	for (let i = 0; i < squares.length; i++) {
-		if (squares[i] == null) {
-			return null;
+			return {winner: winner, lines: line};
 		}
+
 	}
-	// If all squares are filled, there is NO winner, so return false
-	return false;
+
+	// HANDLING WHEN GAME IS A DRAW
+	// If we have played boardSize*boardSize number of moves and there is no winner,
+	// then it is automatically a draw
+	if (movesPlayed === boardSize*boardSize) {
+		return false;
+	}
+
+	// If not all squares are filled, there is no winner yet
+	return null;
 
 }
 
 class TicTacToe extends React.Component {
   constructor(props) {
+		/*
+		 *
+		 */
 	  super(props);
 	  this.state = {
-		  history: [{squares: Array(9).fill(null), move: 0}], // will be changing the order of the moves for display,
-																													// hence every move should know its move number
+			/* 'history':
+			 *
+			 * 'scoreState': Array for checking the current score:
+		 	 * 		scoreState[0..n-1] = (number of p1Symbol in rows 0..n-1) - (number of p2Symbol in rows 0..n-1)
+		 	 * 		scoreState[n...2*n-1] = (number of p1Symbol in columns 0..n-1) - (number of p2Symbol in columns 0..n-1)
+		 	 * 		scoreState[2*n, 2*n+1] = (number of p1Symbol in each diagonals) - (number of p2Symbol in each diagonals)
+			 * 'move': move number
+			 *	  will be changing the order of the moves for display, hence every move should know its move number
+			 */
+		  history: [{squares: Array(9).fill(null), move: 0, scoreState: Array(2*3+2).fill(0)}],
+
 		  p1IsNext: true, // change to 'true' when stepNumber is even
 		  stepNumber: 0, // the move we are currently viewing
 			displayAsc: true, // the order moves are currently displayed in
@@ -118,14 +148,13 @@ class TicTacToe extends React.Component {
 			p2Symbol: this.props.settings.p2Symbol,
 
 	  }
-		console.log(this.state);
   }
   render() { // render the currently selected move, according to stepNumber
 
 
 	let history = this.state.history.slice()
 	const current = history[this.state.stepNumber];
-	const winner = calculateWinner(current.squares);
+	const winner = calculateWinner(current.scoreState, this.state.stepNumber, 3);
 
 	// TOGGLE THE ORDER OF THE DISPLAY OF THE MOVES
 	// if the displayAsc is FALSE, we must reverse the order of history for moves display
@@ -187,7 +216,8 @@ class TicTacToe extends React.Component {
 	let status;
 	let winningSquares;
 	if (winner) {
-		status = 'Winner: ' + winner.winner;
+		let winnerSymbol = (winner.winner === 1) ? this.state.p1Symbol : this.state.p2Symbol;
+		status = 'Winner: ' + winnerSymbol;
 		winningSquares = winner.lines; // PASS BOARD THE SQUARE NUMBERS OF THE WINNING SQUARES
 	} else if (winner == null) {
 		status = 'Next player: ' + (this.state.p1IsNext ? this.state.p1Symbol : this.state.p2Symbol);
@@ -214,18 +244,38 @@ class TicTacToe extends React.Component {
   }
 
   handleClick(i) {
-	  const history = this.state.history.slice(0, this.state.stepNumber+1)
-	  const current = history[history.length - 1]
+	  const history = this.state.history.slice(0, this.state.stepNumber+1);
+	  const current = history[history.length - 1];
 	  const squares = current.squares.slice(); // create a copy of the array and modify the copy
-	  if (calculateWinner(squares) || squares[i]) {
+
+	  if (calculateWinner(current.scoreState, squares.length, 3) || squares[i]) {
 		  return;
 	  }
+
+		// NOTE: CURRENTLY 'p1IsNext' represents the player that JUST played, not next player.
+		const point = this.state.p1IsNext ? 1 : -1; // 1 for p1, -1 for p2.
+		// Update this.state.scoreState
+		const colRow = this.getColRow(i);
+		const col = colRow[0];
+		const row = colRow[1];
+		const gridSize = 3;
+		let newScoreState = current.scoreState.slice();
+		newScoreState[row] += point;
+		newScoreState[gridSize + col] += point;
+		if (row == col) { // left to right diagonal
+			newScoreState[2*gridSize] += point;
+		}
+		if (gridSize - 1 - col == row) { // right to left diagonal
+			newScoreState[2*gridSize + 1] += point;
+		}
+
 	  squares[i] = this.state.p1IsNext ? this.state.p1Symbol : this.state.p2Symbol;
-	  this.setState({history: history.concat({squares: squares, move: this.state.stepNumber+1}),
+		// NOTE: Concat method does not modify the original array, whereas push() does
+	  this.setState({history: history.concat({squares: squares, move: this.state.stepNumber+1, scoreState: newScoreState}),
 									 p1IsNext: !this.state.p1IsNext,
 									 stepNumber: history.length,
 								   displayAsc: this.state.displayAsc});
-	  // NOTE: Concat method does not modify the original array, whereas push() does
+
   }
 
   jumpTo(move) {
@@ -246,6 +296,10 @@ class TicTacToe extends React.Component {
 									 p1IsNext: this.state.p1IsNext,
 									 stepNumber: this.state.stepNumber,
 								   displayAsc: !this.state.displayAsc});
+	}
+
+	getColRow(squareNo) {
+		return [squareNo % 3,Math.floor(squareNo/3)];
 	}
 }
 
