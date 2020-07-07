@@ -7,6 +7,9 @@ class Home extends React.Component {
   render() {
     return (
       <div>
+        <div>
+        TIC TAC TOE
+        </div>
         <Link to="/tictactoe">
           <button>PLAY</button>
         </Link>

@@ -26,13 +26,17 @@ class SettingControl extends React.Component {
     if (p2Symbol !== "") {
       p2SymbolFinal = p2Symbol;
     }
-    if (boardSize !== "" && boardSize <= 30 && boardSize > 1) {
-      boardSizeFinal = boardSize;
+    if (boardSize !== "") {
+      boardSize = parseInt(boardSize);
+      if (boardSize <= 30 && boardSize > 1){
+        boardSizeFinal = boardSize;
+      }
+      else {
+        alert("Please enter a valid whole number board size.\nMinimum Board Size: 2\nMaximum Board Size: 30");
+        return;
+      }
     }
-    else {
-      alert("Please enter a valid whole number board size.\nMinimum Board Size: 2\nMaximum Board Size: 30");
-      return;
-    }
+
 
 
     // Players cannot have the same symbol!

@@ -10,7 +10,7 @@ class Settings extends React.Component {
   setSettings() {
     var p1Symbol = document.getElementById('p1-symbol').value;
     var p2Symbol = document.getElementById('p2-symbol').value;
-    var boardSize = parseInt(document.getElementById('board-size').value);
+    var boardSize = document.getElementById('board-size').value;
     this.props.goToGame(p1Symbol, p2Symbol, boardSize);
   }
 
