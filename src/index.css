@@ -12,15 +12,21 @@ code {
     monospace;
 }*/
 
-body {
+/*body {
   font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
 }
 
-ol, ul {
+/*ol, ul {
   padding-left: 30px;
-}
+}*/
 
+#main-heading {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 100px;
+
+}
 .board-row:after {
   clear: both;
   content: "";

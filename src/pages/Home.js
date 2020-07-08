@@ -7,12 +7,17 @@ class Home extends React.Component {
   render() {
     return (
       <div>
+        <div id="main-heading">TIC TAC TOE</div>
         <div>
-        TIC TAC TOE
+          <Link to="/mytictactoe">
+            <button>CUSTOM GAME</button>
+          </Link>
         </div>
-        <Link to="/tictactoe">
-          <button>PLAY</button>
-        </Link>
+        <div>
+          <Link to="/tictactoe">
+            <button>REGULAR GAME</button>
+          </Link>
+        </div>
       </div>
     );
   }
