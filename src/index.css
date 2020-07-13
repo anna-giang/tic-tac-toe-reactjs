@@ -25,12 +25,29 @@ code {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   font-size: 100px;
+}
+
+#main-desc {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  padding-bottom: 10px;
+}
+
+#inline-desc {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  font-style: italic;
+  padding-bottom: 5px;
 
 }
+
 #page-heading {
   font-family: 'Quicksand', sans-serif;
-  font-weight: 300;
+  font-weight: 500;
   font-size: 50px;
+  padding-bottom: 5px;
 
 }
 .board-row:after {
