@@ -228,19 +228,31 @@ class TicTacToe extends React.Component {
 	}
     return (
       <div className="game">
-        <div className="game-board">
-          <Board squares={current.squares}
-		         onClick={(i)=>this.handleClick(i)}
-						 winningSquares={winningSquares} />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-					<div style={{paddingTop:"15px"}}>
+		<div>
+			<div> 
+				<Link to="/"><button>Back to Home</button></Link>
+			</div>
+			<div id="page-heading">TIC TAC TOE</div>
+		</div>
+		
+		<div> 
+			<div className="game-board">
+				<Board squares={current.squares}
+						onClick={(i)=>this.handleClick(i)}
+								winningSquares={winningSquares} />
+			</div>
+			<div className="game-info">
+				<div>
+					{status}
+				</div>
+				<div>
+					<ol>{moves}</ol>
+				</div>
+				<div style={{paddingTop:"15px"}}>
 					<button onClick={() => this.toggleMoveOrder()}>Toggle Moves Order</button>
-					</div>
-          <ol>{moves}</ol>
-        </div>
-
+				</div>
+			</div>
+		</div>
       </div>
     );
   }

@@ -11,6 +11,8 @@ class Home extends React.Component {
           TIC TAC TOE
         </div>
         <div class="row">
+        </div>
+        <div class="row">
           <div class="col">
             <Link to="/mytictactoe">
               <button type="button" class="btn btn-danger btn-lg">CUSTOM GAME</button>

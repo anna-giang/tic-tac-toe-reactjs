@@ -16,16 +16,32 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <div>
-        <label htmlFor="p1-symbol">Player 1</label>
-        <input id="p1-symbol" maxlength="2" name="p1-symbol"></input><br/>
+      <div class='container'>
+        <div class='row'>
+          <Link to="/"><button>Back to Home</button></Link>
+        </div>
+        <div class='row' id='page-heading'>
+          Settings
+        </div>
 
-        <label htmlFor="p2-symbol">Player 2</label>
-        <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
+        <div class='row'>
+          <label htmlFor="p1-symbol">Player 1</label>
+          <input id="p1-symbol" maxlength="2" name="p1-symbol"></input><br/>
 
-        <label htmlFor="board-size">Board Size</label>
-        <input id="board-size" maxlength="2" name="board-size"></input>
-        <button onClick={() => this.setSettings()}>GO!</button>
+          <label htmlFor="p2-symbol">Player 2</label>
+          <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
+        </div>
+
+        <div class='row'>
+          <label htmlFor="board-size">Board Size</label>
+          <input id="board-size" maxlength="2" name="board-size"></input>
+        </div>
+
+        <div class='row'>
+          <button onClick={() => this.setSettings()}>GO!</button>
+        </div>
+        
+        
       </div>
     )
 

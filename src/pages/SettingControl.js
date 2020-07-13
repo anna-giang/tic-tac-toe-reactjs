@@ -62,11 +62,8 @@ class SettingControl extends React.Component {
     if (this.state.allSet) {
       return (
         <div>
-          {<TicTacToe settings={this.state.gameSettings}/>}
           <button onClick={() => this.goToSettings()}>BACK TO SETTINGS</button>
-          <Link to="/">
-              <button>Back to Home</button>
-          </Link>
+          {<TicTacToe settings={this.state.gameSettings}/>}
         </div>
 
       )
@@ -75,9 +72,6 @@ class SettingControl extends React.Component {
       return (
         <div>
           {<Settings goToGame={(p1Symbol, p2Symbol, boardSize)=>this.goToGame(p1Symbol, p2Symbol, boardSize)}/>}
-          <Link to="/">
-              <button>Back to Home</button>
-          </Link>
         </div>
 
       )
