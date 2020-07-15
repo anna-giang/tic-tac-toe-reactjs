@@ -17,24 +17,35 @@ class Settings extends React.Component {
   render() {
     return (
       <div class='container'>
-        <div class='row'>
-          <Link to="/"><button>Back to Home</button></Link>
-        </div>
-        <div class='row' id='page-heading'>
-          Settings
-        </div>
 
         <div class='row'>
-          <label htmlFor="p1-symbol">Player 1</label>
-          <input id="p1-symbol" maxlength="2" name="p1-symbol"></input><br/>
-
-          <label htmlFor="p2-symbol">Player 2</label>
-          <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
+          <div>
+            <Link to="/"><button>Back to Home</button></Link>
+          </div>
+          <div id='page-heading'>Settings</div>
         </div>
+        
 
-        <div class='row'>
-          <label htmlFor="board-size">Board Size</label>
-          <input id="board-size" maxlength="2" name="board-size"></input>
+        <div class='container'>
+          <div class='row'>
+            <div>Symbols</div>
+            <div>
+              <label htmlFor="p1-symbol">Player 1</label>
+              <input id="p1-symbol" maxlength="2" name="p1-symbol"></input><br/>
+
+              <label htmlFor="p2-symbol">Player 2</label>
+              <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
+            </div>
+          </div>
+
+          <div class='row'>
+              <div>Board</div>
+              <div>
+                <label htmlFor="board-size">Board Size</label>
+                <input id="board-size" maxlength="2" name="board-size"></input>
+              </div>
+          </div>
+
         </div>
 
         <div class='row'>
