@@ -21,9 +21,7 @@ code {
   padding-left: 30px;
 }*/
 
-div {
-  border: 0px solid #999;
-}
+
 #main-heading {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
@@ -87,8 +85,4 @@ div {
 .game {
   display: flex;
   flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
 }*/

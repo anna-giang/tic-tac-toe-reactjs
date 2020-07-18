@@ -62,8 +62,7 @@ class SettingControl extends React.Component {
     if (this.state.allSet) {
       return (
         <div>
-          <button onClick={() => this.goToSettings()}>BACK TO SETTINGS</button>
-          {<TicTacToe settings={this.state.gameSettings}/>}
+          {<TicTacToe backToSettings={()=>this.goToSettings()} settings={this.state.gameSettings}/>}
         </div>
 
       )

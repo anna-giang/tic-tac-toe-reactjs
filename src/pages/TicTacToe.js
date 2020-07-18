@@ -40,7 +40,8 @@ class Board extends React.Component {
 		let col = row;
 		let squareNo = 0; // number the squares sequentially starting from 0
 		let board = [];
-		let squareSize = 200; // size of square for 3 by 3 or 2 by 2 grid. Total size 360 x 360 px.
+		// square size, font size and line height defaults for 3 by 3 and 2 by 2 grids. Total size 400 x 400 px.
+		let squareSize = 200; 
 		let fontSize = 100;
 		let lineHeight = 34;
 
@@ -215,7 +216,7 @@ class TicTacToe extends React.Component {
 		if (move == this.state.stepNumber) {
 			return (
 				<li key={move}>
-					<button onClick={()=> this.jumpTo(move)}><strong>{desc}</strong></button>
+					<button id='move-button' type="button" class="btn btn-outline-dark" onClick={()=> this.jumpTo(move)}><strong>{desc}</strong></button>
 				</li>
 			);
 		}
@@ -223,7 +224,7 @@ class TicTacToe extends React.Component {
 			// NOTE: assign proper KEYS (unique between component and its siblings) whenever building dynamic lists
 			return (
 				<li key={move}>
-					<button onClick={()=> this.jumpTo(move)}>{desc}</button>
+					<button id='move-button' type="button" class="btn btn-outline-dark" onClick={()=> this.jumpTo(move)}>{desc}</button>
 				</li>
 			);
 		}
@@ -231,42 +232,53 @@ class TicTacToe extends React.Component {
 	});
 
 	let status;
+	let settingsButton;
 	let winningSquares;
 	if (winner) {
 		let winnerSymbol = (winner.winner === 1) ? this.state.p1Symbol : this.state.p2Symbol;
-		status = 'Winner: ' + winnerSymbol;
+		status = 'Winner ' + winnerSymbol;
 		winningSquares = winner.lines; // PASS BOARD THE SQUARE NUMBERS OF THE WINNING SQUARES
 	} else if (winner == null) {
-		status = 'Next player: ' + (this.state.p1IsNext ? this.state.p1Symbol : this.state.p2Symbol);
+		status = 'Next player ' + (this.state.p1IsNext ? this.state.p1Symbol : this.state.p2Symbol);
 	} else {
-		status = "RESULT IS A DRAW. Press 'Go to Game Start' to play again.";
+		status = "DRAW";
 	}
+
     return (
       <div className="game">
-		<div>
-			<div> 
-				<Link to="/"><button>Back to Home</button></Link>
+		<div class='d-flex flex-row'>
+			<div class='d-flex flex-column col-1'> 
+				<div class='d-flex'>
+					<Link to="/"><button type="button" class="btn btn-danger">Home</button></Link>
+				</div>
+				<div class='d-flex'>
+					<button onClick={this.props.backToSettings} type="button" class="btn btn-danger">Settings</button>
+				</div>
 			</div>
-			<div id="page-heading">TIC TAC TOE</div>
+			<div class='d-flex col-10 justify-content-center' id="page-heading">TIC TAC TOE</div>
+			<div class='d-flex col-1'></div>
 		</div>
 		
-		<div> 
+		<div class='d-flex flex-row'> 
+			<div class='d-flex col-1'></div>
 			<div className="game-board">
 				<Board squares={current.squares}
 						onClick={(i)=>this.handleClick(i)}
 								winningSquares={winningSquares} />
 			</div>
-			<div className="game-info">
-				<div>
+			<div class='d-flex col-1'></div>
+			<div class='d-flex flex-column' className="game-info">
+				<div class='d-flex justify-content-center' id='status-message'>
 					{status}
 				</div>
-				<div>
+				<div id='move-list' class='d-flex'>
 					<ol>{moves}</ol>
 				</div>
-				<div style={{paddingTop:"15px"}}>
-					<button onClick={() => this.toggleMoveOrder()}>Toggle Moves Order</button>
+				<div class='d-flex justify-content-center'>
+					<button type="button" class="btn btn-danger" onClick={() => this.toggleMoveOrder()}>Toggle Moves Order</button>
 				</div>
 			</div>
+			<div class='d-flex col-1'></div>
 		</div>
       </div>
     );

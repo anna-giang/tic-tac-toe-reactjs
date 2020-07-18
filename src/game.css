@@ -1,0 +1,20 @@
+#status-message {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 50px;
+}
+
+#move-button {
+    margin-bottom: 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+}
+
+#move-list {
+    height: 450px;
+    overflow: scroll;
+    border-top: 0px solid #999;
+}
+
+.game-info {
+    border: 1px solid #999;
+  }

@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.css';
 import './settings.css';
+import './game.css';
 import Main from './Main.js';
 
 function App() {
