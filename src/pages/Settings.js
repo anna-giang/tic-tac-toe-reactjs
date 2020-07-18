@@ -40,14 +40,14 @@ class Settings extends React.Component {
                 <div class='d-flex flex-row col-6' style={{borderRight: '1px solid #000000'}}>
                   <div id='setting-field-label' class='d-flex col-6'>Player 1</div>
                   <div class='d-flex col-6'>
-                    <input id="p1-symbol" maxlength="1" name="p1-symbol"></input><br/>
+                    <input id="p1-symbol" maxlength="2" name="p1-symbol"></input><br/>
                   </div>
                 </div>
 
                 <div class='d-flex flex-row col-6'>
                   <div id='setting-field-label'  class='d-flex col-6'>Player 2</div>
                   <div class='d-flex col-6'>
-                    <input id="p2-symbol" maxlength="1" name="p2-symbol"></input>
+                    <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
                   </div>
                 </div>
 
