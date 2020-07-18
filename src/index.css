@@ -22,7 +22,7 @@ code {
 }*/
 
 div {
-  border: 1px solid #999;
+  border: 0px solid #999;
 }
 #main-heading {
   font-family: 'Quicksand', sans-serif;
@@ -68,14 +68,11 @@ div {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: 100px;
   font-weight: bold;
-  line-height: 34px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  
 }
 
 .square:focus {
