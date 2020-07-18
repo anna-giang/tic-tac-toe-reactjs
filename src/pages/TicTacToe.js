@@ -6,11 +6,12 @@ import {Link} from "react-router-dom";
 
 function Square(props) {
 	// IF THE SQUARE IS A WINNING SQUARE, THEN RETURN A COLOURED SQUARE
+
 	if (props.winningSquare) {
-		return( <button className="square" style={{backgroundColor:"aquamarine"}} onClick={props.onClick}>{props.value}</button> );
+		return( <button className="square" style={{backgroundColor: 'aquamarine', width: props.size + 'px', height: props.size + 'px'}} onClick={props.onClick}>{props.value}</button> );
 	}
 	else {
-		return( <button className="square" onClick={props.onClick}>{props.value}</button> );
+		return( <button className="square" style={{height: props.size + 'px', width: props.size + 'px'}} onClick={props.onClick}>{props.value}</button> );
 	}
 
 
@@ -18,11 +19,12 @@ function Square(props) {
 
 class Board extends React.Component {
   // NOTE -- conventional to name with on[Event] for event handlers, and handle[Event] for event handlers (thing to when when the event occurs)
-  renderSquare(i, isWinner) {
+  renderSquare(i, isWinner, size) {
 	// pass two props to square
     return (
 	 <Square
 	   value={this.props.squares[i]}
+	   size={size}
        onClick={() => this.props.onClick(i)}
 			 	winningSquare={isWinner}
 	 />
@@ -36,6 +38,13 @@ class Board extends React.Component {
 		let col = row;
 		let squareNo = 0; // number the squares sequentially starting from 0
 		let board = [];
+		let squareSize = 120; // size of square for 3 by 3 or 2 by 2 grid. Total size 360 x 360 px.
+
+		// determine new square size -- 
+		if (row > 3) {
+			squareSize = Math.floor((squareSize*3)/row);
+		}
+
 		// outer loop to create the rows
 		for (let r = 0; r < row; r++) {
 			let columns = [];
@@ -47,7 +56,7 @@ class Board extends React.Component {
 					// the square is a 'winningSquare', and will render coloured
 					winningSquare = this.props.winningSquares.includes(c);
 				}
-				columns.push(this.renderSquare(c, winningSquare));
+				columns.push(this.renderSquare(c, winningSquare, squareSize));
 			}
 			squareNo += row;
 			board.push(<div className = "board-row">{columns}</div>);
@@ -124,9 +133,6 @@ function calculateWinner(scoreState, movesPlayed, boardSize) {
 
 class TicTacToe extends React.Component {
   constructor(props) {
-		/*
-		 *
-		 */
 	  super(props);
 	  this.state = {
 			/* 'history':
