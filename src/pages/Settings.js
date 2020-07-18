@@ -18,38 +18,57 @@ class Settings extends React.Component {
     return (
       <div class='container'>
 
-        <div class='row'>
-          <div>
-            <Link to="/"><button>Back to Home</button></Link>
+        <div class='d-flex flex-row'>
+          <div class="d-flex col-1 justify-content-center">
+            <Link to="/"><button type="button" class="btn btn-danger">Home</button></Link>
           </div>
-          <div id='page-heading'>Settings</div>
+          <div class="d-flex col-10 justify-content-center" id='page-heading'>Settings</div>
+          <div class="d-flex col-1"></div>
         </div>
-        
 
-        <div class='container'>
-          <div class='row'>
-            <div>Symbols</div>
-            <div>
-              <label htmlFor="p1-symbol">Player 1</label>
-              <input id="p1-symbol" maxlength="2" name="p1-symbol"></input><br/>
-
-              <label htmlFor="p2-symbol">Player 2</label>
-              <input id="p2-symbol" maxlength="2" name="p2-symbol"></input>
-            </div>
-          </div>
-
-          <div class='row'>
-              <div>Board</div>
-              <div>
-                <label htmlFor="board-size">Board Size</label>
-                <input id="board-size" maxlength="2" name="board-size"></input>
+        <div class='d-flex flex-row'>
+          <div class='d-flex col-1'></div>
+          <div class='container col-10'>
+            
+            <div class='d-flex flex-column'>
+              <div id="setting-heading" class='d-flex flex-row' style={{borderRight: '1px solid #000000', borderLeft: '1px solid #000000', borderTop: '1px solid #000000'}}>
+                <div class='d-flex'>Symbols</div>
               </div>
-          </div>
 
+              <div class='d-flex flex-row' style={{border: '1px solid #000000'}}>
+
+                <div class='d-flex flex-row col-6' style={{borderRight: '1px solid #000000'}}>
+                  <div id='setting-field-label' class='d-flex col-6'>Player 1</div>
+                  <div class='d-flex col-6'>
+                    <input id="p1-symbol" maxlength="1" name="p1-symbol"></input><br/>
+                  </div>
+                </div>
+
+                <div class='d-flex flex-row col-6'>
+                  <div id='setting-field-label'  class='d-flex col-6'>Player 2</div>
+                  <div class='d-flex col-6'>
+                    <input id="p2-symbol" maxlength="1" name="p2-symbol"></input>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class='d-flex flex-row'>
+                <div id="setting-heading" style={{border: '1px solid #000000'}} class='d-flex col-6'>
+                  <div class='d-flex flex-column justify-content-center'>Board Size</div>
+                </div>
+                <div class='d-flex col-6 justify-content-center' style={{borderRight: '1px solid #000000', borderBottom: '1px solid #000000', borderTop: '1px solid #000000'}}> 
+                  <input id="board-size" maxlength="2" name="board-size"></input>
+                </div>
+            </div>
+
+          </div>
+          <div class='d-flex col-1'></div>
         </div>
 
-        <div class='row'>
-          <button onClick={() => this.setSettings()}>GO!</button>
+        <div class='d-flex justify-content-center'>
+          <button onClick={() => this.setSettings()} type="button" class="btn btn-lg btn-danger">PLAY</button>
         </div>
         
         

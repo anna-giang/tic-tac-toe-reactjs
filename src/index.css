@@ -21,6 +21,9 @@ code {
   padding-left: 30px;
 }*/
 
+div {
+  border: 0px solid #999;
+}
 #main-heading {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
@@ -47,7 +50,7 @@ code {
 #page-heading {
   font-family: 'Quicksand', sans-serif;
   font-weight: 500;
-  font-size: 50px;
+  font-size: 70px;
   padding-bottom: 5px;
 
 }
